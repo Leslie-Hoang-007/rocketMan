@@ -2,7 +2,18 @@ import pygame
 from settings import *
 from random import choice, randint
 
-class Background(pygame.sprite.Sprite):
+class vertMove(pygame.sprite.Sprite):
+	# animates vertical
+	def update(self,dt):
+		self.pos.y += 300*dt
+		if self.rect.centery >= WINDOW_HEIGHT:
+			self.pos.y = -WINDOW_HEIGHT
+		self.rect.y = round(self.pos.y)
+		
+
+
+		
+class Background(vertMove):
 	def __init__(self, group,scaleFactor):
 		super().__init__(group)
 		background = pygame.image.load('C:/Users/lessl/Desktop/Semester 5/Projects/runningMan/graphics/environment/bgVertical2x.png').convert()
@@ -15,13 +26,8 @@ class Background(pygame.sprite.Sprite):
 
 		self.rect = self.image.get_rect(midleft =(0,0))
 		self.pos = pygame.math.Vector2(self.rect.topleft)
-
-	# animates background
-	def update(self,dt):
-		self.pos.y += 300*dt
-		if self.rect.centery >= WINDOW_HEIGHT:
-			self.pos.y = -WINDOW_HEIGHT
-		self.rect.y = round(self.pos.y)
+	def animate(self,dt):
+		return
 
 
 class Wrench(pygame.sprite.Sprite):
@@ -57,7 +63,7 @@ class Wrench(pygame.sprite.Sprite):
 			self.kill()
 		
 
-class Fire(pygame.sprite.Sprite):
+class Fire(vertMove):
 	def __init__(self,group,scaleFactor):
 		super().__init__(group)
 		self.sprite_type = 'fire'
@@ -110,14 +116,6 @@ class Fire(pygame.sprite.Sprite):
 		# mask
 		self.mask = pygame.mask.from_surface(self.image)
 
-	# update, flames scrolls down
-	def update(self,dt):
-		self.pos.y += 300*dt
-		if self.rect.centery >= WINDOW_HEIGHT:
-			self.pos.y = -WINDOW_HEIGHT
-		self.rect.y = round(self.pos.y)
-		self.animate(dt)
-		
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self, group, scaleFactor):
